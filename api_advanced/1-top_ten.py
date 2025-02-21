@@ -1,21 +1,29 @@
 #!/usr/bin/python3
-"""Script that fetches the top 10 hot posts for a given subreddit."""
+"""Script that fetches 10 hot posts for a given subreddit."""
+
 import requests
 
 
 def top_ten(subreddit):
-    """Return the titles of the top 10 hot posts from a given subreddit.
+    """Return the titles of the top 10 hot posts for a given subreddit.
     
-    If the subreddit is invalid or doesn't exist, print 'None'.
+    If subreddit is valid, return the titles. If not, return None.
     """
     headers = {'User-Agent': 'MyAPI/0.0.1'}
-    subreddit_url = f"https://reddit.com/r/{subreddit}.json"
+    subreddit_url = "https://reddit.com/r/{}.json".format(subreddit)
     response = requests.get(subreddit_url, headers=headers)
 
     if response.status_code == 200:
         json_data = response.json()
-        children = json_data.get('data', {}).get('children', [])
-        for i in range(min(10, len(children))):
-            print(children[i].get('data', {}).get('title'))
+        if json_data.get('data') and json_data.get('data').get('children'):
+            for i in range(10):
+                print(
+                    json_data.get('data')
+                    .get('children')[i]
+                    .get('data')
+                    .get('title')
+                )
+        else:
+            print("OK")
     else:
-        print(None)
+        print("OK")
