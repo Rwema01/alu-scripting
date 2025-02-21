@@ -23,7 +23,7 @@ def top_ten(subreddit):
                     .get('data')
                     .get('title')
                 )
-            print("OK")
+            return  # Successfully printed top 10, exit function
         else:
             print("OK")
     else:
