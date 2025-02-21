@@ -3,13 +3,15 @@
 
 import requests
 
+
 def top_ten(subreddit):
     """Return the titles of the top 10 hot posts for a given subreddit.
     
     If subreddit is valid, return the titles. If not, return None.
     """
     headers = {'User-Agent': 'MyAPI/0.0.1'}
-    subreddit_url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    subreddit_url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(
+        subreddit)
     response = requests.get(subreddit_url, headers=headers, allow_redirects=False)
 
     if response.status_code == 200:
@@ -21,6 +23,7 @@ def top_ten(subreddit):
             print(None)
     else:
         print(None)
+
 
 if __name__ == '__main__':
     import sys
