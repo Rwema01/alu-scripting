@@ -1,59 +1,43 @@
 #!/usr/bin/python3
+"""Queries the Reddit API and
+prints the titles of the first
+10 hot posts listed for a given
+subreddit.
 """
-Reddit API Query Script
-
-This module defines a function to fetch and print the titles of the first
-10 hot posts from a given subreddit using the Reddit API.
-"""
-
 import requests
 
 
 def top_ten(subreddit):
+    """Prints the titles of the first
+    10 hot posts listed for a given
+    subreddit.
     """
-    Prints the titles of the first 10 hot posts listed for a given subreddit.
+    # Set the Default URL strings
+    base_url = 'https://www.reddit.com'
+    api_uri = '{base}/r/{subreddit}/hot.json'.format(base=base_url,
+                                                     subreddit=subreddit)
 
-    Args:
-        subreddit (str): The name of the subreddit to query.
-
-    If the subreddit is invalid or inaccessible, prints "None".
-    """
-    base_url = "https://www.reddit.com"
-    api_uri = f"{base_url}/r/{subreddit}/hot.json"
-
-    # Set a User-Agent
-    user_agent = {"User-Agent": "Python/requests"}
+    # Set an User-Agent
+    user_agent = {'User-Agent': 'Python/requests'}
 
     # Set the Query Strings to Request
-    payload = {"limit": 10}
+    payload = {'limit': '10'}
 
-    try:
-        res = requests.get(
-            api_uri, headers=user_agent, params=payload, allow_redirects=False
-        )
+    # Get the Response of the Reddit API
+    res = requests.get(api_uri, headers=user_agent,
+                       params=payload, allow_redirects=False)
 
-        # Check if subreddit is invalid or inaccessible
-        if res.status_code != 200:
-            print("None")
-            return
+    # Checks if the subreddit is invalid
+    if res.status_code in [302, 404]:
+        print('None')
+    else:
+        res_json = res.json()
 
-        # Attempt to parse JSON response
-        try:
-            res_json = res.json()
-        except ValueError:
-            print("None")
-            return
+        if res_json.get('data') and res_json.get('data').get('children'):
+            # Get the 10 hot posts of the subreddit
+            hot_posts = res_json.get('data').get('children')
 
-        # Check if response contains expected data
-        posts = res_json.get("data", {}).get("children", [])
-
-        if not posts:
-            print("None")
-            return
-
-        # Print the titles of the 10 hot posts
-        for post in posts:
-            print(post.get("data", {}).get("title", "None"))
-
-    except requests.RequestException:
-        print("None")
+            # Print each hot post title
+            for post in hot_posts:
+                if post.get('data') and post.get('data').get('title'):
+                    print(post.get('data').get('title'))
