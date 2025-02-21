@@ -14,11 +14,13 @@ def top_ten(subreddit):
         subreddit)
     response = requests.get(subreddit_url, headers=headers, allow_redirects=False)
 
+    # Check if the response status code is 200 (OK)
     if response.status_code == 200:
         json_data = response.json()
-        if json_data.get('data') and json_data.get('data').get('children'):
-            for post in json_data.get('data').get('children'):
-                print(post.get('data').get('title'))
+        # Ensure the JSON data contains the expected structure
+        if 'data' in json_data and 'children' in json_data['data']:
+            for post in json_data['data']['children']:
+                print(post['data']['title'])
         else:
             print(None)
     else:
