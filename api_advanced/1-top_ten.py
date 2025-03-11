@@ -23,16 +23,23 @@ def top_ten(subreddit):
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
-        if response.status_code == 200:
-            data = response.json()
-            posts = data['data']['children']
-            for post in posts:
-                print(post['data']['title'])
-            print("OK", end="")  # Print "OK" without a newline
-        else:
-            print("OK", end="")  # Print "OK" without a newline
+
+        if response.status_code != 200:
+            print("None")
+            return
+
+        data = response.json()
+        posts = data.get('data', {}).get('children', [])
+
+        if not posts:
+            print("None")
+            return
+
+        for post in posts:
+            print(post['data']['title'].strip())  # Strip unnecessary spaces
+
     except requests.RequestException:
-        print("OK", end="")  # Print "OK" without a newline
+        print("None")  # Handle request failures
 
 
 if __name__ == "__main__":
