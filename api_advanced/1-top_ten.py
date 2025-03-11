@@ -14,7 +14,7 @@ def top_ten(subreddit):
     If the subreddit is invalid or has no posts, return None."""
     
     headers = {'User-Agent': 'MyAPI/0.0.1'}
-    subreddit_url = f"https://reddit.com/r/{subreddit}/hot.json"  # Improved URL formatting
+    subreddit_url = f"https://reddit.com/r/{subreddit}/hot.json"
     response = requests.get(subreddit_url, headers=headers)
 
     if response.status_code == 200:
@@ -29,3 +29,4 @@ def top_ten(subreddit):
             print("None")  # If there are no posts, print None
     else:
         print("None")  # If the subreddit is invalid, print None
+
