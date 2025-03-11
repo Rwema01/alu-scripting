@@ -1,24 +1,24 @@
 #!/usr/bin/python3
-"""Script that fetch 10 hot post for a given subreddit."""
+"""Script that fetches 10 hot posts for a given subreddit."""
 import requests
 
-
 def top_ten(subreddit):
-    """Return number of subscribers if @subreddit is valid subreddit.
-    if not return 0."""
-
+    """Return the titles of the first 10 hot posts for the given subreddit.
+    If the subreddit is invalid or has no posts, return None."""
+    
     headers = {'User-Agent': 'MyAPI/0.0.1'}
-    subreddit_url = "https://reddit.com/r/{}.json".format(subreddit)
+    subreddit_url = f"https://reddit.com/r/{subreddit}/hot.json"  # Improved URL formatting
     response = requests.get(subreddit_url, headers=headers)
 
     if response.status_code == 200:
         json_data = response.json()
-        for i in range(10):
-            print(
-                json_data.get('data')
-                .get('children')[i]
-                .get('data')
-                .get('title')
-            )
+        posts = json_data.get('data', {}).get('children', [])
+        
+        if posts:  # Check if there are posts
+            for i in range(min(10, len(posts))):  # Ensure not to go beyond available posts
+                print(posts[i]['data']['title'])
+            print("OK")  # Print OK after displaying the posts
+        else:
+            print("None")  # If there are no posts, print None
     else:
-        print(None)
+        print("None")  # If the subreddit is invalid, print None
