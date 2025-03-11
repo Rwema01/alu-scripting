@@ -28,3 +28,4 @@ def top_ten(subreddit):
             print("None")  # If there are no posts in the subreddit
     else:
         print("None")  # If the subreddit is invalid, print None
+
