@@ -1,5 +1,10 @@
 #!/usr/bin/python3
-"""Script that fetches and prints the titles of the first 10 hot posts from a given subreddit."""
+"""
+Script that fetches and prints the titles of the first 10 hot posts from a given subreddit.
+If the subreddit is invalid or contains no posts, it will return None.
+
+Module uses the Reddit API to interact with subreddits and retrieve post data.
+"""
 import requests
 
 
@@ -23,4 +28,3 @@ def top_ten(subreddit):
             print("None")  # If there are no posts in the subreddit
     else:
         print("None")  # If the subreddit is invalid, print None
-
